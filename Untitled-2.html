@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCERT Admin Panel v2 — Digital Learning Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0d1117;--ink2:#1c2333;--ink3:#2a3348;--ink4:#364060;
+  --paper:#f4f6fa;--paper2:#eef1f7;--paper3:#e4e8f2;
+  --line:#d0d7e8;--line2:#bbc4d8;
+  --dust:#8896b0;--dust2:#6b7a96;
+  --white:#ffffff;
+  --blue:#1a56db;--blue-lt:#dbeafe;--blue-dk:#1241a8;
+  --green:#059669;--green-lt:#d1fae5;--green-dk:#047857;
+  --amber:#d97706;--amber-lt:#fef3c7;--amber-dk:#b45309;
+  --red:#dc2626;--red-lt:#fee2e2;--red-dk:#b91c1c;
+  --violet:#7c3aed;--violet-lt:#ede9fe;--violet-dk:#6d28d9;
+  --teal:#0891b2;--teal-lt:#cffafe;--teal-dk:#0e7490;
+  --orange:#ea580c;--orange-lt:#ffedd5;
+  --r:6px;--r-lg:10px;--r-xl:14px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;
+}
+html,body{height:100%;background:var(--paper);color:var(--ink)}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+
+/* TOPBAR */
+.topbar{height:54px;background:var(--ink);display:flex;align-items:center;padding:0 18px;gap:12px;position:sticky;top:0;z-index:300;flex-shrink:0}
+.logo-box{width:30px;height:30px;background:var(--blue);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.logo-text{font-size:13.5px;font-weight:700;color:#fff;letter-spacing:-.3px}
+.logo-sub{font-size:9.5px;color:#6b7a96}
+.tdiv{width:1px;height:26px;background:#2a3348;margin:0 4px}
+.tnav{display:flex;gap:2px}
+.tnav a{padding:6px 11px;border-radius:var(--r);font-size:12px;font-weight:500;color:#8896b0;text-decoration:none;cursor:pointer;transition:all .15s;white-space:nowrap}
+.tnav a:hover{background:#1c2333;color:#c8d0e0}
+.tnav a.active{background:var(--blue);color:#fff}
+.tright{margin-left:auto;display:flex;align-items:center;gap:8px}
+.tb{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.tb-amber{background:#3a2800;color:#fcd34d}
+.tb-green{background:#052e16;color:#34d399}
+.tb-blue{background:#0c1e4a;color:#60a5fa}
+.nb{width:30px;height:30px;border-radius:var(--r);background:#1c2333;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
+.nb svg{width:15px;height:15px;stroke:#8896b0;fill:none}
+.ndot{position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--amber);border:1.5px solid var(--ink)}
+.av{width:30px;height:30px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;cursor:pointer}
+
+/* SHELL */
+.shell{display:flex;height:calc(100vh - 54px)}
+
+/* SIDEBAR */
+.sidebar{width:224px;background:var(--white);border-right:1px solid var(--line);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.sb-book{padding:12px;border-bottom:1px solid var(--line)}
+.book-chip{display:flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:7px 9px;cursor:pointer}
+.bthumb{width:30px;height:38px;background:var(--blue);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0}
+.bi-title{font-size:11.5px;font-weight:600;color:var(--ink);line-height:1.3}
+.bi-sub{font-size:10px;color:var(--dust);margin-top:1px}
+.sb-search{padding:8px 10px;border-bottom:1px solid var(--line)}
+.sw{position:relative}
+.sw svg{position:absolute;left:7px;top:50%;transform:translateY(-50%);width:12px;height:12px;stroke:var(--dust);pointer-events:none;fill:none}
+.si{width:100%;background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:5px 8px 5px 24px;font-size:12px;color:var(--ink);outline:none;font-family:inherit}
+.ns{padding:6px 6px 4px}
+.nsl{font-size:9.5px;font-weight:700;color:var(--dust2);letter-spacing:.8px;text-transform:uppercase;padding:3px 8px 5px}
+.ni{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:var(--r);font-size:12px;color:var(--dust);cursor:pointer;transition:all .15s}
+.ni:hover{background:var(--paper);color:var(--ink2)}
+.ni.active{background:var(--blue-lt);color:var(--blue-dk);font-weight:600}
+.ni svg{width:14px;height:14px;flex-shrink:0;stroke:currentColor;fill:none}
+.nbadge{margin-left:auto;padding:1px 5px;border-radius:10px;font-size:9.5px;font-weight:700}
+.nb-amber{background:var(--amber-lt);color:var(--amber-dk)}
+.nb-blue{background:var(--blue-lt);color:var(--blue-dk)}
+.nb-green{background:var(--green-lt);color:var(--green-dk)}
+.ntree{padding-left:20px}
+.ntree .ni{font-size:11.5px;padding:5px 8px}
+.ttog{font-size:9px;color:var(--dust2);width:12px;text-align:center}
+.ppill{font-size:9px;font-weight:700;padding:1px 5px;border-radius:10px;background:#d1fae5;color:#065f46;margin-left:auto}
+.ppill.lo{background:#fee2e2;color:#991b1b}
+.ppill.mi{background:#fef3c7;color:#92400e}
+
+/* WORKSPACE */
+.workspace{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.tabsbar{background:var(--white);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 16px;gap:1px;flex-shrink:0;overflow-x:auto}
+.tabsbar::-webkit-scrollbar{height:0}
+.tab{padding:10px 13px;font-size:12px;font-weight:500;color:var(--dust);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.tab:hover{color:var(--ink2)}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600}
+.tdivider{width:1px;height:18px;background:var(--line);margin:0 4px;align-self:center;flex-shrink:0}
+
+/* PAGE HDR */
+.phdr{padding:12px 18px 10px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-shrink:0;background:var(--white)}
+.pt{font-size:14.5px;font-weight:700;color:var(--ink)}
+.ps{font-size:11px;color:var(--dust);margin-top:2px}
+.ha{margin-left:auto;display:flex;gap:7px;align-items:center}
+
+/* BUTTONS */
+.btn{padding:5px 13px;border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--line2);background:var(--white);color:var(--ink2);transition:all .15s;font-family:inherit;display:inline-flex;align-items:center;gap:5px}
+.btn:hover{background:var(--paper);border-color:var(--dust2)}
+.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-primary:hover{background:var(--blue-dk)}
+.btn-green{background:var(--green);color:#fff;border-color:var(--green)}
+.btn-amber{background:var(--amber);color:#fff;border-color:var(--amber)}
+.btn-red{background:var(--red);color:#fff;border-color:var(--red)}
+.btn-sm{padding:4px 10px;font-size:11px}
+.btn-xs{padding:2px 8px;font-size:10px;font-weight:700}
+.btn svg{width:12px;height:12px;stroke:currentColor;fill:none}
+
+/* CONTENT */
+.ca{flex:1;overflow-y:auto;padding:16px 18px}
+
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px 16px}
+.csm{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:9px 11px}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+
+/* STATS */
+.stat{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:12px 14px}
+.slbl{font-size:10px;font-weight:700;color:var(--dust2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.sval{font-size:22px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
+.sdelta{font-size:11px;margin-top:4px}
+.up{color:var(--green)}.dn{color:var(--red)}
+
+/* BADGES */
+.badge{padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:3px}
+.b-blue{background:var(--blue-lt);color:var(--blue-dk)}
+.b-green{background:var(--green-lt);color:var(--green-dk)}
+.b-amber{background:var(--amber-lt);color:var(--amber-dk)}
+.b-red{background:var(--red-lt);color:var(--red-dk)}
+.b-violet{background:var(--violet-lt);color:var(--violet-dk)}
+.b-teal{background:var(--teal-lt);color:var(--teal-dk)}
+.b-gray{background:var(--paper3);color:var(--dust2)}
+.b-orange{background:var(--orange-lt);color:var(--orange)}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse}
+thead th{padding:7px 9px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--dust2);border-bottom:1px solid var(--line);background:var(--paper)}
+tbody td{padding:8px 9px;border-bottom:1px solid var(--line);color:var(--dust);vertical-align:middle;font-size:12px}
+td.bld{color:var(--ink);font-weight:600}
+tbody tr:hover td{background:var(--paper);cursor:pointer}
+tbody tr:last-child td{border-bottom:none}
+
+/* FORM */
+.fl{font-size:10px;font-weight:700;color:var(--dust2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;display:block}
+.fi{width:100%;background:var(--paper);border:1px solid var(--line2);border-radius:var(--r);padding:6px 9px;font-size:12.5px;color:var(--ink);font-family:inherit;outline:none;transition:border .15s}
+.fi:focus{border-color:var(--blue);background:var(--white)}
+textarea.fi{resize:vertical}
+.fg{margin-bottom:10px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* TOGGLE */
+.tog{width:32px;height:17px;background:var(--line2);border-radius:9px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;border:none;outline:none}
+.tog.on{background:var(--green)}
+.tog::after{content:'';position:absolute;top:2px;left:2px;width:13px;height:13px;background:white;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tog.on::after{transform:translateX(15px)}
+.tr{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)}
+.tr:last-child{border-bottom:none}
+.tn{font-size:12.5px;font-weight:600;color:var(--ink)}
+.td{font-size:11px;color:var(--dust);margin-top:1px}
+
+/* PBAR */
+.pb{background:var(--paper3);border-radius:20px;height:5px;overflow:hidden}
+.pbf{height:100%;border-radius:20px;transition:width .4s}
+
+/* SCREEN */
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden;min-height:0}
+.screen.active{display:flex}
+
+/* ══ BILINGUAL READER ══ */
+.bili-shell{display:flex;flex:1;overflow:hidden;min-height:0}
+.bili-toolbar{height:46px;background:var(--ink2);display:flex;align-items:center;padding:0 14px;gap:6px;flex-shrink:0}
+.bili-mode-pill{display:flex;background:#1c2333;border:1px solid #364060;border-radius:20px;overflow:hidden}
+.bmp{padding:5px 14px;font-size:11px;font-weight:600;color:#8896b0;cursor:pointer;transition:all .15s}
+.bmp.active{background:var(--blue);color:#fff}
+.rt-btn{width:30px;height:30px;border-radius:var(--r);background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#8896b0;transition:all .15s}
+.rt-btn:hover{background:#2a3348;color:#fff}
+.rt-btn svg{width:15px;height:15px;stroke:currentColor;fill:none}
+.rt-btn.on{background:var(--blue);color:#fff}
+
+/* INDEX PANEL */
+.idx-panel{width:240px;background:var(--paper);border-right:1px solid var(--line);display:flex;flex-direction:column;flex-shrink:0}
+.idx-hdr{padding:9px 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.idx-title{font-size:12px;font-weight:700;color:var(--ink)}
+.idx-body{flex:1;overflow-y:auto;padding:8px}
+.idx-ch{padding:6px 8px;font-size:11.5px;font-weight:600;color:var(--ink2);cursor:pointer;display:flex;align-items:center;justify-content:space-between;border-radius:var(--r)}
+.idx-ch:hover{background:var(--paper3)}
+.idx-ch.active{background:var(--blue-lt);color:var(--blue-dk)}
+.idx-sess{padding:4px 8px 4px 20px;font-size:11px;color:var(--dust);cursor:pointer;display:flex;align-items:center;justify-content:space-between;border-radius:var(--r)}
+.idx-sess:hover{background:var(--paper3)}
+.idx-sess.active{color:var(--blue-dk);font-weight:600;background:var(--white)}
+
+/* BILINGUAL READING PANES */
+.bili-panes{flex:1;display:flex;overflow:hidden;min-width:0}
+.bili-pane{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.bili-pane-hdr{padding:8px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;flex-shrink:0;background:var(--white)}
+.bph-lang{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.bph-tm{background:#fef3c7;color:#92400e}
+.bph-en{background:var(--blue-lt);color:var(--blue-dk)}
+.bili-sep{width:1px;background:var(--line);flex-shrink:0}
+.bili-content{flex:1;overflow-y:auto;padding:20px 22px;scroll-behavior:smooth}
+.b-h1{font-size:18px;font-weight:700;color:var(--blue-dk);margin-bottom:6px}
+.b-h2{font-size:14px;font-weight:700;color:var(--amber-dk);margin-top:18px;margin-bottom:6px}
+.b-p{font-size:13.5px;line-height:1.9;margin-bottom:12px;color:var(--ink)}
+.b-p.tamil{font-family:'Noto Sans Tamil','Plus Jakarta Sans',sans-serif;font-size:14px;line-height:2.1}
+.rw{background:var(--teal-lt);border-bottom:1px dashed var(--teal-dk);cursor:pointer;padding:0 1px}
+.rl{border-bottom:2px solid var(--amber);background:rgba(217,119,6,.08);cursor:pointer}
+.playbtn{display:inline-flex;align-items:center;gap:5px;background:var(--blue);color:#fff;border:none;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;margin-bottom:6px;font-family:inherit}
+.video-embed{border-radius:var(--r);border:1px solid var(--line);margin:10px 0;background:#000;min-height:120px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.hs-img{position:relative;min-height:140px;background:var(--paper3);border-radius:var(--r);border:1px solid var(--line);margin:10px 0;display:flex;align-items:center;justify-content:center}
+.hs{position:absolute;width:22px;height:22px;border-radius:50%;background:var(--blue);border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 2px 6px rgba(26,86,219,.35)}
+.hs::after{content:'';position:absolute;width:30px;height:30px;border-radius:50%;border:1.5px solid var(--blue);opacity:.35;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.35}50%{transform:scale(1.5);opacity:0}}
+.q-embed{background:var(--blue-lt);border:1px solid #bfdbfe;border-radius:var(--r-lg);padding:12px;margin:10px 0}
+.q-embed-title{font-size:10px;font-weight:700;color:var(--blue-dk);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.q-opt{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:var(--r);background:var(--white);border:1px solid var(--line);cursor:pointer;font-size:12px;margin-bottom:4px}
+.cap{font-size:10.5px;color:var(--dust);text-align:center;margin:-6px 0 8px}
+
+/* PAGE NAV */
+.page-nav{height:44px;background:var(--white);border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:12px;flex-shrink:0}
+.pn-btn{padding:5px 14px;border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--line2);background:var(--white);color:var(--ink2);transition:all .15s;font-family:inherit}
+.pn-btn:hover{background:var(--paper)}
+.pn-info{font-size:12px;color:var(--dust);background:var(--paper);border:1px solid var(--line);padding:4px 12px;border-radius:var(--r)}
+
+/* RIGHT RAIL */
+.rail{width:42px;background:var(--paper);border-left:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 0;flex-shrink:0}
+.rail-btn{width:30px;height:30px;border-radius:var(--r);background:transparent;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--dust);transition:all .15s;font-size:8px;font-weight:600}
+.rail-btn:hover{background:var(--paper3);color:var(--ink)}
+.rail-btn svg{width:15px;height:15px;stroke:currentColor;fill:none}
+.rail-sep{width:26px;height:1px;background:var(--line);margin:2px 0}
+
+/* ── EDITOR ── */
+.editor-wrap{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.etb{background:var(--paper);border-bottom:1px solid var(--line);padding:7px 10px;display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+.eb{padding:4px 7px;border-radius:5px;font-size:11.5px;color:var(--dust2);cursor:pointer;background:none;border:none;font-family:inherit;transition:all .15s}
+.eb:hover{background:var(--paper3);color:var(--ink)}
+.eb.on{background:var(--blue-lt);color:var(--blue-dk);font-weight:600}
+.esep{width:1px;height:17px;background:var(--line);margin:0 2px}
+.ebody{background:var(--white);padding:18px;min-height:180px;font-size:13.5px;line-height:1.85;color:var(--ink);outline:none}
+.ptag{border-left:3px solid var(--blue);background:var(--blue-lt);padding:9px 12px;margin:-2px -12px 10px;cursor:pointer;border-radius:0 var(--r) var(--r) 0}
+.wtag{background:var(--teal-lt);color:var(--teal-dk);padding:0 3px;border-radius:3px;cursor:pointer;border-bottom:1px dashed var(--teal)}
+.ltag{border-bottom:2px solid var(--amber);background:rgba(217,119,6,.08);cursor:pointer}
+.actbox{background:var(--green-lt);border:1px solid #a7f3d0;border-radius:var(--r);padding:10px 13px;margin-top:8px;font-size:13px;color:#064e3b}
+
+/* TIMELINE */
+.tlt{background:var(--paper3);border:1px solid var(--line);border-radius:var(--r);height:48px;position:relative;overflow:hidden;margin-bottom:5px;cursor:pointer}
+.tlseg{position:absolute;top:5px;bottom:5px;border-radius:4px;display:flex;align-items:center;padding:0 6px;font-size:10px;font-weight:600;overflow:hidden;white-space:nowrap}
+.tlcur{position:absolute;top:0;bottom:0;width:2px;background:var(--blue)}
+.tlr{display:flex;border-top:1px solid var(--line);padding:3px 0;margin-top:3px}
+.tltick{flex:1;text-align:center;font-size:9px;color:var(--dust2)}
+
+/* APPROVAL WORKFLOW */
+.wf{display:flex;flex-direction:column;position:relative;padding-left:30px;padding-bottom:8px}
+.wf::before{content:'';position:absolute;left:10px;top:14px;bottom:14px;width:1.5px;background:var(--line)}
+.wfn{position:relative;margin-bottom:18px}
+.wfd{position:absolute;left:-30px;top:1px;width:22px;height:22px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:var(--white)}
+.wf-done .wfd{border-color:var(--green);color:var(--green);background:var(--green-lt)}
+.wf-now .wfd{border-color:var(--blue);color:var(--blue);background:var(--blue-lt)}
+.wf-wait .wfd{border-color:var(--line2);color:var(--dust2)}
+.wfnt{font-size:12px;font-weight:600;color:var(--ink)}
+.wfns{font-size:11px;color:var(--dust);margin-top:1px}
+
+/* RIGHT PANEL */
+.rpanel{width:256px;background:var(--white);border-left:1px solid var(--line);display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+.rps{padding:11px 13px;border-bottom:1px solid var(--line)}
+.rpt{font-size:10px;font-weight:700;color:var(--dust2);letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
+
+/* CHECKLIST */
+.cli{display:flex;align-items:center;gap:7px;padding:6px 9px;border-radius:var(--r);margin-bottom:3px}
+.cli-ok{background:var(--green-lt)}.cli-warn{background:var(--amber-lt)}.cli-fail{background:var(--red-lt)}
+.cld{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0}
+.cld-ok{background:var(--green);color:#fff}.cld-warn{background:var(--amber);color:#fff}.cld-fail{background:var(--red);color:#fff}
+
+/* DIFF */
+.ddel{background:#fee2e2;color:#991b1b;text-decoration:line-through;border-radius:2px;padding:0 2px}
+.dadd{background:#d1fae5;color:#065f46;border-radius:2px;padding:0 2px}
+
+/* COMMENT */
+.cmr{display:flex;gap:7px;margin-bottom:9px}
+.cma{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0}
+.cmb{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:7px 10px;flex:1}
+.cmn{font-size:11px;font-weight:700;margin-bottom:2px}
+.cmt{font-size:12px;color:var(--ink2);line-height:1.5}
+.cmtime{font-size:10px;color:var(--dust2);margin-top:2px}
+
+/* FEATURE CARDS */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:9px}
+.fcard{background:var(--white);border:1px solid var(--line);border-radius:var(--r-lg);padding:11px 13px;cursor:pointer;transition:all .15s;position:relative}
+.fcard:hover{border-color:var(--blue);background:var(--blue-lt)}
+.fcard.on{border-color:var(--green)}
+.fcico{width:30px;height:30px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;margin-bottom:7px;font-size:16px}
+.fcn{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.fcd{font-size:10.5px;color:var(--dust);line-height:1.4}
+.fcb{position:absolute;top:8px;right:8px}
+.fcp{font-size:9px;color:var(--dust2);margin-top:5px;padding-top:5px;border-top:1px solid var(--line)}
+
+/* DEVICE PREVIEW */
+.dev-frame{border:2px solid var(--ink3);background:var(--white);overflow:hidden;position:relative;flex-shrink:0}
+.dev-mobile{width:180px;height:310px;border-radius:16px}
+.dev-tablet{width:260px;height:320px;border-radius:12px}
+.dev-laptop{width:340px;height:230px;border-radius:8px}
+.dev-smart{width:320px;height:200px;border-radius:6px}
+.dev-screen{width:100%;height:100%;overflow:hidden;font-size:0;transform-origin:top left}
+.dev-label{font-size:10px;font-weight:600;color:var(--dust2);text-align:center;margin-top:6px;text-transform:uppercase;letter-spacing:.5px}
+
+/* DRAG DROP BUILDER */
+.dnd-canvas{background:var(--paper3);border:2px dashed var(--line2);border-radius:var(--r-lg);min-height:200px;padding:16px;position:relative}
+.dnd-item{background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:8px 12px;display:inline-flex;align-items:center;gap:6px;cursor:grab;font-size:12px;font-weight:500;margin:4px;user-select:none;transition:all .15s}
+.dnd-item:hover{border-color:var(--blue);color:var(--blue-dk)}
+.dnd-item.dragging{opacity:.5;cursor:grabbing}
+.drop-zone{background:var(--blue-lt);border:2px dashed var(--blue);border-radius:var(--r);padding:10px;min-height:60px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--blue-dk);font-weight:500;margin:6px 0;transition:all .15s}
+.drop-zone.over{background:#bfdbfe;border-color:var(--blue-dk)}
+
+/* QR + LMS */
+.qr-box{width:100px;height:100px;background:var(--white);border:1px solid var(--line);border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qr-grid{display:grid;grid-template-columns:repeat(7,12px);grid-template-rows:repeat(7,12px);gap:1px}
+.qr-cell{border-radius:1px}
+
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--white);border-radius:var(--r-xl);border:1px solid var(--line);width:460px;max-width:94vw;padding:20px;max-height:88vh;overflow-y:auto}
+.mftitle{font-size:14.5px;font-weight:700;margin-bottom:4px}
+.mfsub{font-size:11.5px;color:var(--dust);margin-bottom:14px}
+.mfooter{display:flex;gap:7px;justify-content:flex-end;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:var(--white);padding:10px 15px;border-radius:var(--r-lg);font-size:12px;font-weight:500;z-index:600;transform:translateY(60px);opacity:0;transition:all .3s;border:1px solid var(--ink3);display:flex;align-items:center;gap:8px}
+.toast.show{transform:translateY(0);opacity:1}
+.tdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-box">SC</div>
+  <div><div class="logo-text">SCERT Admin</div><div class="logo-sub">Tamil Nadu Digital Learning</div></div>
+  <div class="tdiv"></div>
+  <nav class="tnav">
+    <a class="active" onclick="goScreen(this,'dashboard')">Dashboard</a>
+    <a onclick="goScreen(this,'editor')">Content Editor</a>
+    <a onclick="goScreen(this,'reader')">Bilingual Reader</a>
+    <a onclick="goScreen(this,'activities')">Activities</a>
+    <a onclick="goScreen(this,'features')">Features</a>
+    <a onclick="goScreen(this,'approval')">Approval</a>
+    <a onclick="goScreen(this,'deploy')">Deploy</a>
+    <a onclick="goScreen(this,'analytics')">Analytics</a>
+  </nav>
+  <div class="tright">
+    <span class="tb tb-amber">7 Pending</span>
+    <span class="tb tb-green">● Live</span>
+    <button class="nb" onclick="goScreen(document.querySelector('.tnav a:nth-child(6)'),'approval')">
+      <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      <div class="ndot"></div>
+    </button>
+    <div class="av">AD</div>
+  </div>
+</div>
+
+<div class="shell">
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-book">
+    <div class="book-chip">
+      <div class="bthumb">Gr8</div>
+      <div><div class="bi-title">Grade 8 — Science</div><div class="bi-sub">Tamil Medium · 2024–25</div></div>
+    </div>
+  </div>
+  <div class="sb-search">
+    <div class="sw">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input class="si" placeholder="Search chapters, pages…">
+    </div>
+  </div>
+  <div class="ns">
+    <div class="nsl">Content Tree</div>
+    <div class="ni active" onclick="navTo(this,'dashboard')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Overview
+    </div>
+    <div class="ni" onclick="toggleTree('c1');navTo(this,'editor')">
+      <span class="ttog" id="c1a">▾</span> Ch.1 — Properties of Matter
+      <span class="ppill mi">78%</span>
+    </div>
+    <div class="ntree" id="c1t">
+      <div class="ni" onclick="navTo(this,'editor')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Session 1.1 · Pg 1–8<span class="nbadge nb-green">Live</span></div>
+      <div class="ni" onclick="navTo(this,'editor')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Session 1.2 · Pg 9–18<span class="nbadge nb-amber" style="color:var(--amber-dk)">Draft</span></div>
+    </div>
+    <div class="ni" onclick="toggleTree('c2');navTo(this,'editor')">
+      <span class="ttog" id="c2a">▸</span> Ch.2 — Measurement
+      <span class="ppill">94%</span>
+    </div>
+    <div class="ntree" id="c2t" style="display:none">
+      <div class="ni" onclick="navTo(this,'editor')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Session 2.1 · Pg 1–10</div>
+    </div>
+    <div class="ni" onclick="toggleTree('c3');navTo(this,'editor')">
+      <span class="ttog" id="c3a">▸</span> Ch.3 — Force & Motion
+      <span class="ppill lo">41%</span>
+    </div>
+    <div class="ntree" id="c3t" style="display:none"></div>
+  </div>
+  <div class="ns" style="margin-top:auto;border-top:1px solid var(--line);padding-top:8px">
+    <div class="ni" onclick="goScreen(document.querySelector('.tnav a:nth-child(6)'),'approval')">
+      <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+      Approval Queue <span class="nbadge nb-amber">7</span>
+    </div>
+    <div class="ni" onclick="goScreen(document.querySelector('.tnav a:nth-child(8)'),'analytics')">
+      <svg viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      Analytics
+    </div>
+  </div>
+</aside>
+
+<div style="flex:1;display:flex;overflow:hidden">
+
+<!-- ════════════ DASHBOARD ════════════ -->
+<div class="screen active" id="screen-dashboard">
+  <div class="phdr">
+    <div><div class="pt">Platform Dashboard</div><div class="ps">SCERT Tamil Nadu · Grade 8 Science · 2024–25</div></div>
+    <div class="ha">
+      <button class="btn btn-sm">Export</button>
+      <button class="btn btn-primary btn-sm" onclick="goScreen(document.querySelector('.tnav a:nth-child(2)'),'editor')">+ New Page</button>
+    </div>
+  </div>
+  <div class="ca">
+    <div class="g4" style="margin-bottom:14px">
+      <div class="stat"><div class="slbl">Total Students</div><div class="sval">42.8L</div><div class="sdelta up">↑ 12% this term</div></div>
+      <div class="stat"><div class="slbl">Active Books</div><div class="sval">48</div><div class="sdelta up">Grades 1–12</div></div>
+      <div class="stat"><div class="slbl">Content Pages</div><div class="sval">18,432</div><div class="sdelta up">↑ 340 this week</div></div>
+      <div class="stat"><div class="slbl">Avg Engagement</div><div class="sval">68%</div><div class="sdelta dn">↓ 3% vs last month</div></div>
+    </div>
+    <div class="g2" style="margin-bottom:14px">
+      <div class="card">
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px">Content Progress <span class="badge b-blue">Live</span></div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dust);margin-bottom:3px"><span>Gr.6 Science</span><span style="color:var(--green);font-weight:600">94%</span></div><div class="pb"><div class="pbf" style="width:94%;background:var(--green)"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dust);margin-bottom:3px"><span>Gr.8 Maths</span><span style="color:var(--blue);font-weight:600">78%</span></div><div class="pb"><div class="pbf" style="width:78%;background:var(--blue)"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dust);margin-bottom:3px"><span>Gr.10 Tamil</span><span style="color:var(--amber);font-weight:600">62%</span></div><div class="pb"><div class="pbf" style="width:62%;background:var(--amber)"></div></div></div>
+          <div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--dust);margin-bottom:3px"><span>Gr.12 Physics</span><span style="color:var(--red);font-weight:600">41%</span></div><div class="pb"><div class="pbf" style="width:41%;background:var(--red)"></div></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:10px">Pending Approvals</div>
+        <table>
+          <thead><tr><th>Content</th><th>Stage</th><th>SLA</th><th></th></tr></thead>
+          <tbody>
+            <tr onclick="goScreen(document.querySelector('.tnav a:nth-child(6)'),'approval')"><td class="bld">Gr.8 Science Ch.1 Pg.3–7</td><td><span class="badge b-amber">L1</span></td><td style="color:var(--amber);font-weight:600">22h</td><td><button class="btn btn-xs btn-primary">Review</button></td></tr>
+            <tr onclick="goScreen(document.querySelector('.tnav a:nth-child(6)'),'approval')"><td class="bld">Gr.6 Tamil Ch.2 Pg.1–12</td><td><span class="badge b-blue">L2</span></td><td style="color:var(--green);font-weight:600">44h</td><td><button class="btn btn-xs">Review</button></td></tr>
+            <tr onclick="goScreen(document.querySelector('.tnav a:nth-child(6)'),'approval')"><td class="bld">Gr.10 Maths Ch.4 Pg.22–30</td><td><span class="badge b-amber">L1</span></td><td style="color:var(--red);font-weight:600">2h!</td><td><button class="btn btn-xs btn-amber">Urgent</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:12.5px;font-weight:700;margin-bottom:10px">Recent Activity</div>
+      <table>
+        <thead><tr><th>Action</th><th>User</th><th>Module</th><th>Status</th><th>Time</th></tr></thead>
+        <tbody>
+          <tr><td>Page updated</td><td class="bld">Priya Rajan</td><td>Gr.8 Science Ch.3</td><td><span class="badge b-green">Published</span></td><td>2 min ago</td></tr>
+          <tr><td>Audio mapped (45 lines)</td><td class="bld">Content Team</td><td>Gr.6 Tamil Ch.1</td><td><span class="badge b-blue">In Review</span></td><td>18 min ago</td></tr>
+          <tr><td>3D model uploaded</td><td class="bld">Karthik S.</td><td>Gr.10 Bio Ch.5</td><td><span class="badge b-amber">Processing</span></td><td>1 hr ago</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ CONTENT EDITOR ════════════ -->
+<div class="screen" id="screen-editor">
+  <div class="tabsbar">
+    <div class="tab active" onclick="swTab(this)">Content</div>
+    <div class="tab" onclick="swTab(this)">Audio Sync</div>
+    <div class="tab" onclick="swTab(this)">Media</div>
+    <div class="tab" onclick="swTab(this)">Tagging</div>
+    <div class="tab" onclick="swTab(this)">Assessment</div>
+    <div class="tdivider"></div>
+    <div class="tab" onclick="goScreen(document.querySelector('.tnav a:nth-child(3)'),'reader')">👁 Preview Bilingual</div>
+  </div>
+  <div style="display:flex;flex:1;overflow:hidden">
+    <div class="ca" style="flex:1">
+      <div class="phdr" style="margin:-16px -18px 14px;padding:10px 18px">
+        <div><div class="pt" style="font-size:13px">Gr.8 Science › Ch.1 › Session 1.2 › Page 3</div><div class="ps">Properties of Matter — Introduction</div></div>
+        <div class="ha">
+          <button class="btn btn-sm">◀</button>
+          <span style="font-size:11px;background:var(--paper);border:1px solid var(--line);padding:3px 10px;border-radius:var(--r);color:var(--dust)">3 / 24</span>
+          <button class="btn btn-sm">▶</button>
+          <button class="btn btn-amber btn-sm" onclick="openModal('submit')">Submit for Approval</button>
+          <button class="btn btn-primary btn-sm">Save Draft</button>
+        </div>
+      </div>
+
+      <div class="editor-wrap" style="margin-bottom:13px">
+        <div class="etb">
+          <button class="eb on">B</button><button class="eb"><i>I</i></button><button class="eb"><u>U</u></button>
+          <div class="esep"></div>
+          <button class="eb">H1</button><button class="eb">H2</button>
+          <div class="esep"></div>
+          <button class="eb on" style="color:var(--blue-dk)">¶ Para Tag</button>
+          <button class="eb on" style="color:var(--teal-dk)">W Word</button>
+          <button class="eb" style="color:var(--amber-dk)">— Line</button>
+          <div class="esep"></div>
+          <button class="eb">🖼 Image</button><button class="eb">▶ Video</button><button class="eb">🔊 Audio</button><button class="eb">⬡ 3D</button><button class="eb">⚡ Sim</button>
+          <div class="esep"></div>
+          <button class="eb">? Question</button><button class="eb">🎮 Activity</button>
+        </div>
+        <div class="ebody" contenteditable="true">
+          <div class="ptag">
+            <div style="font-size:10px;color:var(--blue-dk);margin-bottom:4px;font-weight:700">PARAGRAPH 1 [P001] · Tamil + English · Audio: pg3_tm.mp3</div>
+            Everything around us is made of <span class="wtag">matter</span>. Matter is anything that has <span class="wtag">mass</span> and occupies space. The <span class="wtag">properties</span> of matter help us understand how different substances behave in our daily lives.
+          </div>
+          <br>
+          <div><span class="ltag">Matter exists in three <span class="wtag">states</span>: solid, liquid, and gas.</span> Each state has different physical characteristics.</div>
+          <br>
+          <div class="actbox">🔬 <strong>Activity 1.1:</strong> Collect 5 objects. Classify as solid, liquid, or gas.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:13px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+          <div style="font-size:12px;font-weight:700">Audio Sync Timeline</div>
+          <div style="display:flex;gap:5px">
+            <button class="btn btn-xs">⏮</button><button class="btn btn-xs btn-primary">▶ Play</button>
+            <button class="btn btn-xs">Upload Audio</button>
+            <span style="font-size:10px;color:var(--dust);align-self:center">0:42 / 1:42</span>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--dust2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px">Full Page</div>
+        <div class="tlt">
+          <div class="tlseg" style="left:0;width:35%;background:var(--blue-lt);color:var(--blue-dk)">Para 1 (0:00–0:36)</div>
+          <div class="tlseg" style="left:36%;width:38%;background:var(--teal-lt);color:var(--teal-dk)">Para 2 (0:37–1:15)</div>
+          <div class="tlseg" style="left:75%;width:24%;background:var(--amber-lt);color:var(--amber-dk)">Activity</div>
+          <div class="tlcur" style="left:40%"></div>
+        </div>
+        <div style="font-size:10px;color:var(--dust2);text-transform:uppercase;letter-spacing:.4px;margin:7px 0 4px">Line-by-Line</div>
+        <div class="tlt" style="height:36px">
+          <div class="tlseg" style="left:0;width:18%;background:var(--violet-lt);color:var(--violet-dk);font-size:9px">L1</div>
+          <div class="tlseg" style="left:19%;width:16%;background:var(--violet-lt);color:var(--violet-dk);font-size:9px">L2</div>
+          <div class="tlseg" style="left:36%;width:22%;background:var(--violet-lt);color:var(--violet-dk);font-size:9px">L3</div>
+          <div class="tlseg" style="left:59%;width:15%;background:var(--violet-lt);color:var(--violet-dk);font-size:9px">L4</div>
+          <div class="tlcur" style="left:40%"></div>
+        </div>
+        <div class="tlr">
+          <div class="tltick">0:00</div><div class="tltick">0:20</div><div class="tltick">0:40</div>
+          <div class="tltick">1:00</div><div class="tltick">1:20</div><div class="tltick">1:40</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel -->
+    <div class="rpanel">
+      <div class="rps">
+        <div class="rpt">Reading Features</div>
+        <div class="tr"><div><div class="tn">Full Page Audio</div><div class="td">Page-synced narration</div></div><button class="tog on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="tr"><div><div class="tn">Line-by-Line Reading</div><div class="td">Tap-to-read guided</div></div><button class="tog on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="tr"><div><div class="tn">Paragraph Playback</div></div><button class="tog on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="tr"><div><div class="tn">Bilingual View</div><div class="td">Tamil ↔ English split</div></div><button class="tog on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="tr"><div><div class="tn">Word Meanings</div></div><button class="tog on" onclick="this.classList.toggle('on')"></button></div>
+      </div>
+      <div class="rps">
+        <div class="rpt">Study Tools</div>
+        <div class="tr"><div><div class="tn">Annotations & Bookmarks</div></div><button class="tog on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="tr"><div><div class="tn">Highlighting</div></div><button class="tog on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="tr"><div><div class="tn">Dictionary / Glossary</div></div><button class="tog on" onclick="this.classList.toggle('on')"></button></div>
+        <div class="tr"><div><div class="tn">Smart Keyword Search</div></div><button class="tog on" onclick="this.classList.toggle('on')"></button></div>
+      </div>
+      <div class="rps">
+        <div class="rpt">Page Meta</div>
+        <div class="fg"><label class="fl">Page Type</label><select class="fi"><option>Content Page</option><option>Activity</option><option>Assessment</option></select></div>
+        <div class="fg"><label class="fl">Difficulty</label><select class="fi"><option>Medium</option><option>Easy</option><option>Hard</option></select></div>
+        <div class="fg"><label class="fl">Keywords</label><input class="fi" value="matter, mass, states"/></div>
+      </div>
+      <div class="rps">
+        <div class="rpt">Approval</div>
+        <div style="font-size:12px;color:var(--ink2);display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><span>Stage</span><span class="badge b-amber">L1 Review</span></div>
+        <div style="font-size:12px;color:var(--ink2);display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><span>SLA</span><span style="font-weight:600;color:var(--amber)">22h left</span></div>
+        <button class="btn btn-amber btn-sm" style="width:100%;justify-content:center" onclick="openModal('submit')">Submit for Approval</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ BILINGUAL READER ════════════ -->
+<div class="screen" id="screen-reader">
+  <div class="bili-toolbar">
+    <!-- Mode switcher -->
+    <div class="bili-mode-pill">
+      <div class="bmp active" id="mode-bili" onclick="setMode('bili')">Bilingual Split</div>
+      <div class="bmp" id="mode-tm" onclick="setMode('tm')">Tamil Only</div>
+      <div class="bmp" id="mode-en" onclick="setMode('en')">English Only</div>
+    </div>
+    <div class="tdiv"></div>
+    <!-- Playback -->
+    <button class="rt-btn" title="Play All">
+      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none"/></svg>
+    </button>
+    <button class="rt-btn rt-on" title="Line Reading">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h6"/></svg>
+    </button>
+    <div class="tdiv"></div>
+    <!-- Tools -->
+    <button class="rt-btn rt-on" title="Highlight">
+      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor" stroke="none"/></svg>
+    </button>
+    <button class="rt-btn" title="Bookmark">
+      <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+    </button>
+    <button class="rt-btn" title="Notes">
+      <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    </button>
+    <button class="rt-btn" title="Dictionary">
+      <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+    </button>
+    <button class="rt-btn" title="Search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    </button>
+    <div class="tdiv"></div>
+    <!-- sync indicator -->
+    <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#60a5fa">
+      <div style="width:7px;height:7px;border-radius:50%;background:#34d399;animation:pulse 2s infinite"></div>
+      Pages synced
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+      <select style="background:#1c2333;border:1px solid #364060;border-radius:var(--r);padding:4px 8px;font-size:11px;color:#c8d0e0;font-family:inherit;outline:none">
+        <option>Session - 2</option><option>Session - 1</option><option>Session - 3</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- MAIN BILINGUAL AREA -->
+  <div class="bili-shell">
+    <!-- Index -->
+    <div class="idx-panel" id="idx-panel">
+      <div class="idx-hdr">
+        <span class="idx-title">Index</span>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-xs">Expand</button>
+          <button class="btn btn-xs">Collapse</button>
+        </div>
+      </div>
+      <div class="idx-body">
+        <div class="idx-ch">Ch.2 — Diversity in the Living World <span class="ppill lo" style="font-size:8px">3%</span></div>
+        <div class="idx-ch">Ch.3 — Mindful Eating <span class="ppill mi" style="font-size:8px">10%</span></div>
+        <div class="idx-ch active">Ch.4 — Exploring Magnets <span class="ppill" style="font-size:8px">0%</span></div>
+        <div style="padding-left:10px">
+          <div class="idx-sess">Session – 1 <span class="ppill lo" style="font-size:8px">0%</span></div>
+          <div class="idx-sess active">Session – 2 <span class="ppill lo" style="font-size:8px">0%</span></div>
+          <div class="idx-sess">Session – 3 <span class="ppill lo" style="font-size:8px">0%</span></div>
+          <div class="idx-sess">Session – 4 Study Material <span class="ppill lo" style="font-size:8px">0%</span></div>
+        </div>
+        <div class="idx-ch">Ch.5 — Measurement <span class="ppill" style="font-size:8px">0%</span></div>
+      </div>
+    </div>
+
+    <!-- PANES WRAPPER -->
+    <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0">
+      <div class="bili-panes" id="bili-panes">
+
+        <!-- LEFT PANE — TAMIL -->
+        <div class="bili-pane" id="pane-tamil">
+          <div class="bili-pane-hdr">
+            <span class="bph-lang bph-tm">🇮🇳 தமிழ் (Tamil)</span>
+            <button class="playbtn" style="margin-bottom:0">
+              <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:white;stroke:none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Play All
+            </button>
+            <span style="font-size:10px;color:var(--dust);margin-left:auto">Ch.4 › Session 2 › Page 3</span>
+          </div>
+          <div class="bili-content" id="tm-content">
+            <div class="b-h1" style="font-family:'Noto Sans Tamil',sans-serif">4.3 திக்கு கண்டுபிடித்தல்</div>
+            <div class="b-h2" style="font-family:'Noto Sans Tamil',sans-serif">செயல்பாடு 4.3: நாமே சோதிப்போம்</div>
+
+            <button class="playbtn">
+              <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:white;stroke:none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              பத்தி 1 இசைக்க
+            </button>
+            <div class="b-p tamil">
+              ◆ ஒரு கம்பி <span class="rw">காந்தத்தை</span> நூலில் கட்டி நடுவில் தொங்கவிடுங்கள். <span class="rl">காந்தம் கிடைமட்டமாக சமன் ஆகும் வரை நூலின் நிலையை சரிசெய்யவும்.</span>
+            </div>
+            <div class="b-p tamil">
+              ◆ இப்போது <span class="rl">காந்தத்தை மெதுவாக கிடைமட்ட திசையில் சுழற்றி</span> அது நிற்கும் இடத்தை கவனியுங்கள். காந்தம் எந்த திசையில் நிற்கிறது என்று குறிப்பிடுங்கள்.
+            </div>
+
+            <!-- Tamil video -->
+            <div class="video-embed">
+              <div style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,.6);color:#fff;font-size:9px;padding:2px 6px;border-radius:3px;font-weight:600">VIDEO</div>
+              <div style="text-align:center;color:#666">
+                <div style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;margin:0 auto 8px">
+                  <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--blue);stroke:none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+                <div style="font-size:11px;font-family:'Noto Sans Tamil',sans-serif">காந்த திசைமான்</div>
+              </div>
+            </div>
+
+            <!-- Hotspot diagram -->
+            <div class="hs-img">
+              <div style="font-size:11px;color:var(--dust);text-align:center">
+                <div style="font-size:26px;margin-bottom:4px">🧲</div>
+                <span style="font-family:'Noto Sans Tamil',sans-serif;font-size:12px">காந்த அமைப்பு படம்</span>
+              </div>
+              <div class="hs" style="top:30%;left:30%;transform:translate(-50%,-50%)">1</div>
+              <div class="hs" style="top:60%;left:65%;transform:translate(-50%,-50%)">2</div>
+            </div>
+
+            <!-- Embedded question Tamil -->
+            <div class="q-embed">
+              <div class="q-embed-title">? விரைவு சோதனை</div>
+              <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:7px;font-family:'Noto Sans Tamil',sans-serif">காந்தம் எத்தனை துருவங்களை கொண்டுள்ளது?</div>
+              <label class="q-opt"><input type="radio" name="qtm"> 2 துருவங்கள்</label>
+              <label class="q-opt"><input type="radio" name="qtm"> 3 துருவங்கள்</label>
+              <label class="q-opt"><input type="radio" name="qtm"> 4 துருவங்கள்</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEPARATOR -->
+        <div class="bili-sep"></div>
+
+        <!-- RIGHT PANE — ENGLISH -->
+        <div class="bili-pane" id="pane-english">
+          <div class="bili-pane-hdr">
+            <span class="bph-lang bph-en">🇬🇧 English</span>
+            <button class="playbtn" style="margin-bottom:0">
+              <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:white;stroke:none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Play All
+            </button>
+            <span style="font-size:10px;color:var(--dust);margin-left:auto">Ch.4 › Session 2 › Page 3</span>
+          </div>
+          <div class="bili-content" id="en-content">
+            <div class="b-h1">4.3 Finding Directions</div>
+            <div class="b-h2">Activity 4.3: Let us experiment</div>
+
+            <button class="playbtn">
+              <svg viewBox="0 0 24 24" style="width:11px;height:11px;fill:white;stroke:none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Play Para 1
+            </button>
+            <div class="b-p">
+              ◆ Suspend a bar <span class="rw">magnet</span> with a thread tied to the middle of the magnet. <span class="rl">You may need to adjust the position of the string till the magnet is balanced horizontally.</span>
+            </div>
+            <div class="b-p">
+              ◆ Now <span class="rl">rotate the magnet gently in the horizontal direction</span> and let it come to rest. Note the direction in which it points.
+            </div>
+
+            <!-- English video -->
+            <div class="video-embed">
+              <div style="position:absolute;top:6px;left:6px;background:rgba(0,0,0,.6);color:#fff;font-size:9px;padding:2px 6px;border-radius:3px;font-weight:600">VIDEO</div>
+              <div style="text-align:center;color:#666">
+                <div style="width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;margin:0 auto 8px">
+                  <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:var(--blue);stroke:none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </div>
+                <div style="font-size:11px">Magnetic Compass</div>
+              </div>
+            </div>
+
+            <!-- Hotspot diagram -->
+            <div class="hs-img">
+              <div style="font-size:11px;color:var(--dust);text-align:center">
+                <div style="font-size:26px;margin-bottom:4px">🧲</div>
+                Magnet Structure Diagram
+              </div>
+              <div class="hs" style="top:30%;left:30%;transform:translate(-50%,-50%)">1</div>
+              <div class="hs" style="top:60%;left:65%;transform:translate(-50%,-50%)">2</div>
+            </div>
+
+            <!-- Embedded question English -->
+            <div class="q-embed">
+              <div class="q-embed-title">? Quick Check</div>
+              <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:7px">How many poles does a magnet have?</div>
+              <label class="q-opt"><input type="radio" name="qen"> 2 poles</label>
+              <label class="q-opt"><input type="radio" name="qen"> 3 poles</label>
+              <label class="q-opt"><input type="radio" name="qen"> 4 poles</label>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end bili-panes -->
+
+      <!-- PAGE NAV -->
+      <div class="page-nav">
+        <button class="pn-btn">◀ Previous</button>
+        <div class="pn-info">Chapter 4 — Session 2 — Page 3 / 24</div>
+        <button class="pn-btn">Next ▶</button>
+      </div>
+    </div>
+
+    <!-- RIGHT RAIL -->
+    <div class="rail">
+      <div class="rail-btn" title="Font Size"><svg viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg><span>Font</span></div>
+      <div class="rail-btn" title="Width"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 00-2 2v3M21 8V5a2 2 0 00-2-2h-3M3 16v3a2 2 0 002 2h3M16 21h3a2 2 0 002-2v-3"/></svg><span>Width</span></div>
+      <div class="rail-sep"></div>
+      <div class="rail-btn" title="Font Family"><svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg><span>Type</span></div>
+      <div class="rail-btn" title="Language"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg><span>Lang</span></div>
+      <div class="rail-sep"></div>
+      <div class="rail-btn" title="High Contrast"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2v20" fill="none"/><path d="M12 2a10 10 0 010 20" fill="currentColor" opacity=".4"/></svg><span>A11y</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ ACTIVITIES (Drag-Drop + Puzzle) ════════════ -->
+<div class="screen" id="screen-activities">
+  <div class="tabsbar">
+    <div class="tab active" onclick="swTab(this)">Drag & Drop</div>
+    <div class="tab" onclick="swTab(this)">Click-to-Explore</div>
+    <div class="tab" onclick="swTab(this)">Puzzle Games</div>
+    <div class="tab" onclick="swTab(this)">Simulations</div>
+  </div>
+  <div class="phdr">
+    <div><div class="pt">Interactive Activity Builder</div><div class="ps">Drag-drop, click-to-explore, puzzles, simulations</div></div>
+    <div class="ha">
+      <button class="btn btn-sm">Preview Activity</button>
+      <button class="btn btn-primary btn-sm">+ New Activity</button>
+    </div>
+  </div>
+  <div class="ca">
+    <div class="g2" style="margin-bottom:14px">
+      <!-- Drag-Drop Builder -->
+      <div class="card">
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px">
+          Drag & Drop Activity Builder
+          <span class="badge b-blue">Live Preview</span>
+        </div>
+        <div class="fg">
+          <label class="fl">Activity Title</label>
+          <input class="fi" value="Classify the States of Matter"/>
+        </div>
+        <div class="frow">
+          <div class="fg"><label class="fl">Activity Type</label>
+            <select class="fi"><option>Drag to Category</option><option>Order Sequence</option><option>Match Pairs</option><option>Fill in Blanks</option></select>
+          </div>
+          <div class="fg"><label class="fl">Max Attempts</label><input class="fi" value="3" type="number"/></div>
+        </div>
+        <div style="font-size:11px;font-weight:600;color:var(--dust2);text-transform:uppercase;margin-bottom:7px;letter-spacing:.5px">Drop Zones</div>
+        <div class="dnd-canvas" id="dnd-canvas">
+          <div style="display:flex;gap:10px;margin-bottom:10px">
+            <div class="drop-zone" style="flex:1" id="dz1" ondragover="ev(event)" ondrop="drop(event,'dz1')">
+              <span>Solid</span>
+            </div>
+            <div class="drop-zone" style="flex:1" id="dz2" ondragover="ev(event)" ondrop="drop(event,'dz2')">
+              <span>Liquid</span>
+            </div>
+            <div class="drop-zone" style="flex:1" id="dz3" ondragover="ev(event)" ondrop="drop(event,'dz3')">
+              <span>Gas</span>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--dust2);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Drag Items</div>
+          <div id="drag-items">
+            <div class="dnd-item" draggable="true" ondragstart="drag(event)" id="di1">🪨 Rock</div>
+            <div class="dnd-item" draggable="true" ondragstart="drag(event)" id="di2">💧 Water</div>
+            <div class="dnd-item" draggable="true" ondragstart="drag(event)" id="di3">🌬️ Air</div>
+            <div class="dnd-item" draggable="true" ondragstart="drag(event)" id="di4">🧊 Ice</div>
+            <div class="dnd-item" draggable="true" ondragstart="drag(event)" id="di5">🥛 Milk</div>
+            <div class="dnd-item" draggable="true" ondragstart="drag(event)" id="di6">💨 Steam</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:7px;margin-top:10px">
+          <button class="btn btn-sm btn-primary">Save Activity</button>
+          <button class="btn btn-sm">+ Add Item</button>
+          <button class="btn btn-sm">+ Add Zone</button>
+        </div>
+      </div>
+
+      <!-- Puzzle Game Builder -->
+      <div class="card">
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:10px">Puzzle Game Builder</div>
+        <div class="fg"><label class="fl">Puzzle Type</label>
+          <select class="fi"><option>Word Scramble</option><option>Crossword</option><option>Image Puzzle (Jigsaw)</option><option>Match the Following</option><option>Memory Cards</option></select>
+        </div>
+        <div class="fg"><label class="fl">Topic</label><input class="fi" value="Properties of Matter — Vocabulary"/></div>
+        <div style="font-size:11px;font-weight:600;color:var(--dust2);text-transform:uppercase;margin-bottom:7px;letter-spacing:.5px">Word Bank (Scramble Preview)</div>
+        <div style="background:var(--paper3);border-radius:var(--r);padding:12px;font-family:'JetBrains Mono',monospace;font-size:12px;margin-bottom:10px">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:6px 8px;text-align:center">
+              <div style="font-size:10px;color:var(--dust);margin-bottom:2px">Word</div>
+              <div style="font-weight:600;color:var(--ink)">MATTER</div>
+              <div style="font-size:10px;color:var(--amber)">→ TTEMAR</div>
+            </div>
+            <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:6px 8px;text-align:center">
+              <div style="font-size:10px;color:var(--dust);margin-bottom:2px">Word</div>
+              <div style="font-weight:600;color:var(--ink)">SOLID</div>
+              <div style="font-size:10px;color:var(--amber)">→ DOLIS</div>
+            </div>
+            <div style="background:var(--white);border:1px solid var(--line);border-radius:var(--r);padding:6px 8px;text-align:center">
+              <div style="font-size:10px;color:var(--dust);margin-bottom:2px">Word</div>
+              <div style="font-weight:600;color:var(--ink)">GAS</div>
+              <div style="font-size:10px;color:var(--amber)">→ SAG</div>
+            </div>
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Scoring</label>
+          <select class="fi"><option>+5 pts per correct</option><option>+10 pts per correct</option><option>Time-based scoring</option></select>
+        </div>
+        <div class="fg"><label class="fl">Hint System</label>
+          <select class="fi"><option>First letter shown</option><option>Definition hint</option><option>No hint</option></select>
+        </div>
+        <button class="btn btn-primary btn-sm">Generate Puzzle</button>
+      </div>
+    </div>
+
+    <!-- QR + LMS -->
+    <div class="card">
+      <div style="font-size:12.5px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:7px">
+        QR Code & LMS Integration
+        <span class="badge b-green">Connected</span>
+      </div>
+      <div class="g3">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--ink2);margin-bottom:8px">Generate QR Code</div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div class="qr-box">
+              <!-- QR code art -->
+              <svg viewBox="0 0 70 70" width="90" height="90" xmlns="http://www.w3.org/2000/svg">
+                <rect x="5" y="5" width="25" height="25" rx="2" fill="none" stroke="#0d1117" stroke-width="2"/>
+                <rect x="10" y="10" width="15" height="15" rx="1" fill="#0d1117"/>
+                <rect x="40" y="5" width="25" height="25" rx="2" fill="none" stroke="#0d1117" stroke-width="2"/>
+                <rect x="45" y="10" width="15" height="15" rx="1" fill="#0d1117"/>
+                <rect x="5" y="40" width="25" height="25" rx="2" fill="none" stroke="#0d1117" stroke-width="2"/>
+                <rect x="10" y="45" width="15" height="15" rx="1" fill="#0d1117"/>
+                <rect x="40" y="40" width="5" height="5" fill="#0d1117"/>
+                <rect x="47" y="40" width="5" height="5" fill="#0d1117"/>
+                <rect x="54" y="40" width="5" height="5" fill="#0d1117"/>
+                <rect x="40" y="47" width="5" height="5" fill="#0d1117"/>
+                <rect x="54" y="47" width="5" height="5" fill="#0d1117"/>
+                <rect x="40" y="54" width="5" height="5" fill="#0d1117"/>
+                <rect x="47" y="54" width="11" height="5" fill="#0d1117"/>
+              </svg>
+            </div>
+            <div style="flex:1">
+              <div class="fg" style="margin-bottom:7px"><label class="fl">Link to</label>
+                <select class="fi"><option>Gr.8 Science Ch.1 Pg.3</option><option>Full Chapter</option><option>Activity</option><option>Assessment</option></select>
+              </div>
+              <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center">Generate QR</button>
+              <button class="btn btn-sm" style="width:100%;justify-content:center;margin-top:5px">Download SVG</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--ink2);margin-bottom:8px">LMS Integration</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div class="csm" style="display:flex;align-items:center;justify-content:space-between">
+              <div><div style="font-size:12px;font-weight:600;color:var(--ink)">SCORM 2004</div><div style="font-size:10px;color:var(--dust)">LMS compatibility</div></div>
+              <span class="badge b-green">✓ Active</span>
+            </div>
+            <div class="csm" style="display:flex;align-items:center;justify-content:space-between">
+              <div><div style="font-size:12px;font-weight:600;color:var(--ink)">xAPI / Tin Can</div><div style="font-size:10px;color:var(--dust)">Learning records</div></div>
+              <span class="badge b-green">✓ Active</span>
+            </div>
+            <div class="csm" style="display:flex;align-items:center;justify-content:space-between">
+              <div><div style="font-size:12px;font-weight:600;color:var(--ink)">Google Classroom</div><div style="font-size:10px;color:var(--dust)">Auto sync assignments</div></div>
+              <span class="badge b-amber">Configure</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--ink2);margin-bottom:8px">Analytics Dashboard Integration</div>
+          <div class="csm" style="margin-bottom:6px">
+            <div style="font-size:11px;font-weight:600;color:var(--ink)">Student Progress Sync</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+              <span style="font-size:11px;color:var(--dust)">Real-time to LMS</span>
+              <button class="tog on" onclick="this.classList.toggle('on')"></button>
+            </div>
+          </div>
+          <div class="csm">
+            <div style="font-size:11px;font-weight:600;color:var(--ink)">Assessment Results Push</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+              <span style="font-size:11px;color:var(--dust)">Auto-push on submit</span>
+              <button class="tog on" onclick="this.classList.toggle('on')"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ FEATURES ════════════ -->
+<div class="screen" id="screen-features">
+  <div class="phdr">
+    <div><div class="pt">Feature Configuration</div><div class="ps">All 24 platform features — enable per book or globally</div></div>
+    <div class="ha"><button class="btn btn-sm">Reset</button><button class="btn btn-primary btn-sm">Save Config</button></div>
+  </div>
+  <div class="ca">
+    <div style="margin-bottom:18px">
+      <div style="font-size:11px;font-weight:700;color:var(--dust2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--line)">Reading & Language Support</div>
+      <div class="fgrid">
+        <div class="fcard on"><div class="fcico" style="background:var(--blue-lt)">🔊</div><div class="fcn">Full Page Audio Playback</div><div class="fcd">Professionally narrated, page-synced</div><div class="fcb"><span class="badge b-green">ON</span></div><div class="fcp">Accessibility / Inclusivity</div></div>
+        <div class="fcard on"><div class="fcico" style="background:var(--teal-lt)">📖</div><div class="fcn">Line-by-Line Guided Reading</div><div class="fcd">Tap-to-read any selected line</div><div class="fcb"><span class="badge b-green">ON</span></div><div class="fcp">Foundational Literacy</div></div>
+        <div class="fcard on"><div class="fcico" style="background:var(--violet-lt)">¶</div><div class="fcn">Paragraph-Focused Playback</div><div class="fcd">Tap icon to play paragraph audio</div><div class="fcb"><span class="badge b-green">ON</span></div><div class="fcp">Reading Fluency</div></div>
+        <div class="fcard on"><div class="fcico" style="background:var(--amber-lt)">📚</div><div class="fcn">Tap-to-View Word Meaning</div><div class="fcd">Side-by-side definitions panel</div><div class="fcb"><span class="badge b-green">ON</span></div><div class="fcp">Vocabulary Development</div></div>
+        <div class="fcard on"><div class="fcico" style="background:var(--green-lt)">🇮🇳🇬🇧</div><div class="fcn">Parallel Bilingual View</div><div class="fcd">Tamil left / English right, synced</div><div class="fcb"><span class="badge b-green">ON</span></div><div class="fcp">Language Inclusivity</div></div>
+      </div>
+    </div>
+    <div style="margin-bottom:18px">
+      <div style="font-size:11px;font-weight:700;color:var(--dust2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--line)">Visual Enhancement</div>
+      <div class="fgrid">
+        <div class="fcard on"><div class="fcico" style="background:var(--blue-lt)">🔵</div><div class="fcn">2D Diagram Hotspots</div><div class="fcd">Clickable labeled explainer hotspots</div><div class="fcb"><span class="badge b-green">ON</span></div><div class="fcp">Concept Visualization</div></div>
+        <div class="fcard on"><div class="fcico" style="background:var(--violet-lt)">⬡</div><div class="fcn">3D Concept Model & 360°</div><div class="fcd">Rotation, zoom, dynamic labels</div><div class="fcb"><span class="badge b-green">ON</span></div><div class="fcp">Spatial Understanding</div></div>
+        <div class="fcard"><div class="fcico" style="background:var(--amber-lt)">⚡</div><div class="fcn">Animated Process Explainers</div><div class="fcd">Short step-by-step animations</div><div class="fcb"><span class="badge b-gray">OFF</span></div><div class="fcp">Process Comprehension</div></div>
+        <div class="fcard"><div class="fcico" style="background:var(--teal-lt)">🖥</div><div class="fcn">Interactive Simulations</div><div class="fcd">GeoGebra, PhET, H5P embedded</div><div class="fcb"><span class="badge b-gray">OFF</span></div><div class="fcp">Inquiry-Based Learning</div></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--dust2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--line)">Interactive Assessment</div>
+        <div class="fgrid" style="grid-template-columns:1fr 1fr">
+          <div class="fcard on"><div class="fcico" style="background:var(--red-lt)">?</div><div class="fcn">Embedded Question Bank</div><div class="fcb"><span class="badge b-green">ON</span></div><div class="fcp">Formative Assessment</div></div>
+          <div class="fcard on"><div class="fcico" style="background:var(--green-lt)">⚡</div><div class="fcn">Immediate Feedback Engine</div><div class="fcb"><span class="badge b-green">ON</span></div><div class="fcp">Adaptive Learning</div></div>
+          <div class="fcard on"><div class="fcico" style="background:var(--blue-lt)">📊</div><div class="fcn">Automated Scoring</div><div class="fcb"><span class="badge b-green">ON</span></div><div class="fcp">Progress Monitoring</div></div>
+          <div class="fcard on"><div class="fcico" style="background:var(--violet-lt)">🎮</div><div class="fcn">Drag-Drop Activities</div><div class="fcb"><span class="badge b-green">ON</span></div><div class="fcp">Active Learning</div></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--dust2);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--line)">Device Optimization</div>
+        <div class="fgrid" style="grid-template-columns:1fr 1fr">
+          <div class="fcard on"><div class="fcico" style="background:var(--green-lt)">📱</div><div class="fcn">Mobile</div><div class="fcb"><span class="badge b-green">ON</span></div></div>
+          <div class="fcard on"><div class="fcico" style="background:var(--blue-lt)">📟</div><div class="fcn">Tablet</div><div class="fcb"><span class="badge b-green">ON</span></div></div>
+          <div class="fcard on"><div class="fcico" style="background:var(--amber-lt)">💻</div><div class="fcn">Laptop</div><div class="fcb"><span class="badge b-green">ON</span></div></div>
+          <div class="fcard on"><div class="fcico" style="background:var(--violet-lt)">📺</div><div class="fcn">Smartboard</div><div class="fcb"><span class="badge b-green">ON</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ APPROVAL ════════════ -->
+<div class="screen" id="screen-approval">
+  <div class="tabsbar">
+    <div class="tab active" onclick="swTab(this)">Review Queue</div>
+    <div class="tab" onclick="swTab(this)">My Reviews</div>
+    <div class="tab" onclick="swTab(this)">Approved</div>
+    <div class="tab" onclick="swTab(this)">Returned</div>
+    <div class="tab" onclick="swTab(this)">Workflow Rules</div>
+  </div>
+  <div style="display:flex;flex:1;overflow:hidden">
+    <div class="ca" style="flex:1">
+      <div class="g4" style="margin-bottom:12px">
+        <div class="stat"><div class="slbl">Awaiting</div><div class="sval" style="color:var(--amber)">7</div></div>
+        <div class="stat"><div class="slbl">In Progress</div><div class="sval" style="color:var(--blue)">3</div></div>
+        <div class="stat"><div class="slbl">Approved (Month)</div><div class="sval" style="color:var(--green)">41</div></div>
+        <div class="stat"><div class="slbl">Returned</div><div class="sval" style="color:var(--red)">5</div></div>
+      </div>
+
+      <div class="card" style="margin-bottom:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div>
+            <div style="font-size:13px;font-weight:700">Gr.8 Science — Ch.1, Pg.3–7 · Properties of Matter</div>
+            <div style="font-size:11px;color:var(--dust);margin-top:2px">Priya Rajan · 2 hours ago · L1 Content Review</div>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-red btn-sm" onclick="openModal('reject')">Return to Author</button>
+            <button class="btn btn-amber btn-sm" onclick="openModal('revise')">Request Changes</button>
+            <button class="btn btn-green btn-sm" onclick="openModal('approve')">Approve & Forward</button>
+          </div>
+        </div>
+        <div class="g3" style="margin-bottom:10px">
+          <div class="csm"><div style="font-size:10px;color:var(--dust2)">Stage</div><div style="font-size:12px;font-weight:700;color:var(--amber);margin-top:2px">L1 — Content Review</div></div>
+          <div class="csm"><div style="font-size:10px;color:var(--dust2)">Next</div><div style="font-size:12px;font-weight:700;color:var(--blue);margin-top:2px">L2 — HOD Approval</div></div>
+          <div class="csm"><div style="font-size:10px;color:var(--dust2)">SLA</div><div style="font-size:12px;font-weight:700;color:var(--amber);margin-top:2px">22h remaining</div><div class="pb" style="margin-top:4px"><div class="pbf" style="width:30%;background:var(--amber)"></div></div></div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:6px">Content Diff</div>
+        <div style="background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:11px;font-size:13px;line-height:1.9;margin-bottom:10px">
+          Everything around us is made of <span class="dadd">matter</span>. Matter is anything that has <span class="ddel">weight</span><span class="dadd">mass</span> and occupies space. The properties of matter help us understand how <span class="dadd">different substances behave in our daily lives</span><span class="ddel">objects behave</span>.
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:7px">Media & Accessibility Checklist</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:10px">
+          <div class="cli cli-ok"><div class="cld cld-ok">✓</div><div style="font-size:12px">Full page audio mapped</div><span class="badge b-green" style="margin-left:auto">OK</span></div>
+          <div class="cli cli-ok"><div class="cld cld-ok">✓</div><div style="font-size:12px">Line-by-line sync complete</div><span class="badge b-green" style="margin-left:auto">OK</span></div>
+          <div class="cli cli-warn"><div class="cld cld-warn">!</div><div style="font-size:12px">3D model — 2 unlabelled</div><span class="badge b-amber" style="margin-left:auto">Warning</span></div>
+          <div class="cli cli-ok"><div class="cld cld-ok">✓</div><div style="font-size:12px">Bilingual text verified</div><span class="badge b-green" style="margin-left:auto">OK</span></div>
+          <div class="cli cli-fail"><div class="cld cld-fail">✗</div><div style="font-size:12px">Captions missing Pg.5</div><span class="badge b-red" style="margin-left:auto">Fail</span></div>
+          <div class="cli cli-ok"><div class="cld cld-ok">✓</div><div style="font-size:12px">Drag-drop activity tested</div><span class="badge b-green" style="margin-left:auto">OK</span></div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:7px">Review Thread</div>
+        <div class="cmr"><div class="cma" style="background:var(--violet-lt);color:var(--violet-dk)">SK</div><div class="cmb"><div class="cmn" style="color:var(--violet-dk)">Sudha K. <span style="color:var(--dust);font-weight:400">· L1 Reviewer</span></div><div class="cmt">Audio sync for paragraph 2 seems off on line 3. Please re-check timestamp mapping.</div><div class="cmtime">Yesterday 4:22 PM</div></div></div>
+        <div class="cmr"><div class="cma" style="background:var(--blue-lt);color:var(--blue-dk)">PR</div><div class="cmb"><div class="cmn" style="color:var(--blue-dk)">Priya R. <span style="color:var(--dust);font-weight:400">· Author</span></div><div class="cmt">Fixed the audio timeline. 3D hotspot labels in progress.</div><div class="cmtime">Today 9:05 AM</div></div></div>
+        <div style="display:flex;gap:7px;margin-top:8px">
+          <div class="cma" style="background:var(--blue-lt);color:var(--blue-dk);align-self:flex-end">AD</div>
+          <textarea class="fi" rows="2" placeholder="Add a review comment…" style="flex:1"></textarea>
+          <button class="btn btn-primary btn-sm" style="align-self:flex-end">Send</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:7px">Pending Queue <span class="badge b-amber">7</span></div>
+        <table>
+          <thead><tr><th>Content</th><th>Subject</th><th>Stage</th><th>By</th><th>SLA</th><th></th></tr></thead>
+          <tbody>
+            <tr style="background:var(--blue-lt)"><td class="bld">Gr.8 Science Ch.1 Pg.3–7</td><td><span class="badge b-blue">Science</span></td><td><span class="badge b-amber">L1</span></td><td>Priya R.</td><td style="color:var(--amber);font-weight:600">22h</td><td><button class="btn btn-primary btn-xs">Reviewing</button></td></tr>
+            <tr><td class="bld">Gr.6 Tamil Ch.2 Pg.1–12</td><td><span class="badge b-violet">Tamil</span></td><td><span class="badge b-blue">L2</span></td><td>Meena K.</td><td style="color:var(--green);font-weight:600">44h</td><td><button class="btn btn-xs">Review</button></td></tr>
+            <tr><td class="bld">Gr.10 Maths Ch.4 Pg.22–30</td><td><span class="badge b-green">Maths</span></td><td><span class="badge b-amber">L1</span></td><td>Karthik S.</td><td style="color:var(--red);font-weight:700">2h!</td><td><button class="btn btn-xs btn-amber">Urgent</button></td></tr>
+            <tr><td class="bld">Gr.12 Physics Ch.7 Pg.1–6</td><td><span class="badge b-amber">Physics</span></td><td><span class="badge b-teal">L3</span></td><td>Ravi S.</td><td style="color:var(--green);font-weight:600">3d</td><td><button class="btn btn-xs">Review</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="rpanel">
+      <div class="rps">
+        <div class="rpt">Approval Journey</div>
+        <div class="wf">
+          <div class="wfn wf-done"><div class="wfd">✓</div><div class="wfnt">Content Submitted</div><div class="wfns">Priya Rajan · Mar 14</div><div style="margin-top:3px"><span class="badge b-green" style="font-size:9px">Done</span></div></div>
+          <div class="wfn wf-now"><div class="wfd">1</div><div class="wfnt">L1 — Content Review</div><div class="wfns">Admin (You)</div><div style="margin-top:3px"><span class="badge b-amber" style="font-size:9px">In Progress</span></div></div>
+          <div class="wfn wf-wait"><div class="wfd">2</div><div class="wfnt">L2 — HOD Approval</div><div class="wfns">Dr. Sundaram · 48h SLA</div><div style="margin-top:3px"><span class="badge b-gray" style="font-size:9px">Waiting</span></div></div>
+          <div class="wfn wf-wait"><div class="wfd">3</div><div class="wfnt">L3 — Final Publish</div><div class="wfns">Platform Admin</div><div style="margin-top:3px"><span class="badge b-gray" style="font-size:9px">Waiting</span></div></div>
+          <div class="wfn wf-wait"><div class="wfd">↑</div><div class="wfnt">Live on Platform</div><div class="wfns">Auto-publish to CDN</div></div>
+        </div>
+      </div>
+      <div class="rps">
+        <div class="rpt">Reviewer Checklist</div>
+        <div style="display:flex;flex-direction:column;gap:4px" id="rvcl">
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Text content verified</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Tamil language accuracy</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Audio sync tested</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--blue)"> 3D labels complete</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--blue)"> Captions added</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Curriculum aligned</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Bilingual view verified</label>
+        </div>
+        <div id="ckst" style="margin-top:7px;font-size:11px;color:var(--dust)">5 / 7 completed</div>
+      </div>
+      <div style="padding:12px 13px;display:flex;flex-direction:column;gap:6px">
+        <button class="btn btn-green" onclick="openModal('approve')" style="width:100%;justify-content:center">Approve & Forward to L2</button>
+        <button class="btn btn-amber" onclick="openModal('revise')" style="width:100%;justify-content:center">Request Changes</button>
+        <button class="btn btn-red" onclick="openModal('reject')" style="width:100%;justify-content:center">Return to Author</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ DEPLOY ════════════ -->
+<div class="screen" id="screen-deploy">
+  <div class="tabsbar">
+    <div class="tab active" onclick="swTab(this)">Device Preview</div>
+    <div class="tab" onclick="swTab(this)">EPUB Packaging</div>
+    <div class="tab" onclick="swTab(this)">Testing & QA</div>
+    <div class="tab" onclick="swTab(this)">Publish</div>
+  </div>
+  <div class="phdr">
+    <div><div class="pt">Deploy & Device Preview</div><div class="ps">Test across Mobile, Tablet, Laptop, Smartboard before publishing</div></div>
+    <div class="ha">
+      <button class="btn btn-sm">Run All Tests</button>
+      <button class="btn btn-primary btn-sm" onclick="openModal('publish')">Publish Digital Book</button>
+    </div>
+  </div>
+  <div class="ca">
+    <!-- Device previews -->
+    <div style="font-size:12.5px;font-weight:700;margin-bottom:12px">Device Optimization Preview</div>
+    <div style="display:flex;gap:20px;align-items:flex-end;margin-bottom:18px;overflow-x:auto;padding-bottom:8px;flex-wrap:wrap">
+
+      <!-- Mobile -->
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="dev-frame dev-mobile">
+          <div style="height:100%;background:var(--white);display:flex;flex-direction:column;overflow:hidden">
+            <div style="background:var(--ink);height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <div style="width:40px;height:4px;background:#444;border-radius:2px"></div>
+            </div>
+            <div style="background:var(--ink2);height:28px;display:flex;align-items:center;padding:0 8px;flex-shrink:0">
+              <div style="font-size:7px;color:#fff;font-weight:600">SCERT</div>
+              <div style="margin-left:auto;display:flex;gap:3px">
+                <div style="width:14px;height:14px;border-radius:50%;background:#1a56db;display:flex;align-items:center;justify-content:center;font-size:5px;color:#fff">≡</div>
+              </div>
+            </div>
+            <div style="flex:1;overflow:hidden;padding:6px;font-size:6px;line-height:1.5;color:var(--ink)">
+              <div style="font-size:7px;font-weight:700;color:#1241a8;margin-bottom:3px">4.3 Properties of Matter</div>
+              <div style="background:var(--blue-lt);padding:3px 4px;border-radius:2px;margin-bottom:3px;font-size:6px">¶ Para 1 · Tamil</div>
+              <div style="font-size:6px;line-height:1.5;margin-bottom:3px">Everything around us is made of <span style="background:#cffafe;border-radius:1px">matter</span>. Matter is anything that has mass...</div>
+              <div style="background:#d1fae5;padding:3px;border-radius:2px;font-size:5.5px">🔬 Activity 1.1: Classify objects</div>
+              <div style="margin-top:4px;background:var(--blue);color:#fff;font-size:5.5px;padding:2px 5px;border-radius:10px;display:inline-block">▶ Play</div>
+            </div>
+            <div style="background:var(--paper);height:24px;display:flex;align-items:center;justify-content:space-around;border-top:1px solid var(--line);flex-shrink:0;padding:0 4px">
+              <div style="font-size:5px;color:var(--dust);text-align:center">Home</div>
+              <div style="font-size:5px;color:var(--blue);text-align:center;font-weight:600">Read</div>
+              <div style="font-size:5px;color:var(--dust);text-align:center">Quiz</div>
+              <div style="font-size:5px;color:var(--dust);text-align:center">Profile</div>
+            </div>
+          </div>
+        </div>
+        <div class="dev-label">📱 Mobile</div>
+        <span class="badge b-green" style="margin-top:3px">✓ Optimized</span>
+      </div>
+
+      <!-- Tablet -->
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="dev-frame dev-tablet">
+          <div style="height:100%;background:var(--white);display:flex;flex-direction:column;overflow:hidden">
+            <div style="background:var(--ink2);height:28px;display:flex;align-items:center;padding:0 8px;flex-shrink:0">
+              <div style="font-size:8px;color:#fff;font-weight:600">SCERT</div>
+              <div style="margin-left:auto;font-size:8px;color:#8896b0">Grade 8 Science</div>
+            </div>
+            <div style="flex:1;display:flex;overflow:hidden">
+              <div style="width:70px;background:var(--paper);border-right:1px solid var(--line);padding:4px;font-size:6px;color:var(--dust);overflow:hidden">
+                <div style="font-weight:600;color:var(--ink2);margin-bottom:3px">Index</div>
+                <div style="padding:2px 3px;background:var(--blue-lt);color:var(--blue-dk);border-radius:2px;margin-bottom:2px;font-weight:600">Ch.4 Magnets</div>
+                <div style="padding:2px 3px;margin-bottom:2px">→ Session 1</div>
+                <div style="padding:2px 3px;background:var(--blue-lt);margin-bottom:2px;border-radius:2px">→ Session 2 ●</div>
+              </div>
+              <div style="flex:1;padding:6px;font-size:6.5px;color:var(--ink)">
+                <div style="font-size:8.5px;font-weight:700;color:#1241a8;margin-bottom:3px">4.3 Finding Directions</div>
+                <div style="display:flex;gap:4px">
+                  <div style="flex:1">
+                    <div style="font-size:6px;background:#fef3c7;padding:2px 4px;border-radius:10px;color:#92400e;display:inline-block;margin-bottom:3px">🇮🇳 Tamil</div>
+                    <div style="font-size:6px;line-height:1.5;font-family:'Noto Sans Tamil',sans-serif">ஒரு கம்பி காந்தத்தை நூலில்...</div>
+                  </div>
+                  <div style="width:1px;background:var(--line);flex-shrink:0"></div>
+                  <div style="flex:1">
+                    <div style="font-size:6px;background:var(--blue-lt);padding:2px 4px;border-radius:10px;color:var(--blue-dk);display:inline-block;margin-bottom:3px">🇬🇧 English</div>
+                    <div style="font-size:6px;line-height:1.5">Suspend a bar magnet...</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dev-label">📟 Tablet</div>
+        <span class="badge b-green" style="margin-top:3px">✓ Optimized</span>
+      </div>
+
+      <!-- Laptop -->
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="dev-frame dev-laptop">
+          <div style="height:100%;background:var(--white);display:flex;flex-direction:column;overflow:hidden">
+            <div style="background:var(--ink);height:22px;display:flex;align-items:center;padding:0 8px;flex-shrink:0">
+              <div style="font-size:8px;color:#fff;font-weight:600">SCERT Tamil Nadu Digital Platform</div>
+              <div style="margin-left:auto;display:flex;gap:4px">
+                <div style="font-size:7px;color:#8896b0">Dashboard</div>
+                <div style="font-size:7px;color:#60a5fa">Books</div>
+                <div style="font-size:7px;color:#8896b0">Analytics</div>
+              </div>
+            </div>
+            <div style="flex:1;display:flex;overflow:hidden;font-size:6.5px">
+              <div style="width:75px;background:var(--paper);border-right:1px solid var(--line);padding:4px;overflow:hidden">
+                <div style="font-size:7px;font-weight:600;color:var(--ink2);margin-bottom:3px">Content Tree</div>
+                <div style="color:var(--dust2);margin-bottom:1px">▾ Ch.4 Magnets</div>
+                <div style="padding-left:8px;color:var(--dust2)">Session 1</div>
+                <div style="padding-left:8px;background:var(--blue-lt);color:var(--blue-dk);border-radius:2px;padding:1px 8px">Session 2</div>
+              </div>
+              <div style="flex:1;display:flex;overflow:hidden">
+                <div style="flex:1;padding:6px;background:#fafbfe;border-right:1px solid var(--line)">
+                  <div style="font-size:7px;background:#fef3c7;padding:1px 5px;border-radius:10px;color:#92400e;display:inline-block;margin-bottom:3px">🇮🇳 Tamil</div>
+                  <div style="font-size:6.5px;line-height:1.6;font-family:'Noto Sans Tamil',sans-serif">4.3 திக்கு கண்டுபிடித்தல்<br>◆ ஒரு கம்பி காந்தத்தை நூலில் கட்டி...</div>
+                </div>
+                <div style="flex:1;padding:6px">
+                  <div style="font-size:7px;background:var(--blue-lt);padding:1px 5px;border-radius:10px;color:var(--blue-dk);display:inline-block;margin-bottom:3px">🇬🇧 English</div>
+                  <div style="font-size:6.5px;line-height:1.6">4.3 Finding Directions<br>◆ Suspend a bar magnet with a thread...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dev-label" style="margin-top:10px">💻 Laptop</div>
+        <span class="badge b-green" style="margin-top:3px">✓ Optimized</span>
+      </div>
+
+      <!-- Smartboard -->
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="dev-frame dev-smart">
+          <div style="height:100%;background:var(--white);display:flex;flex-direction:column;overflow:hidden">
+            <div style="background:var(--ink2);height:20px;display:flex;align-items:center;padding:0 8px;flex-shrink:0">
+              <div style="font-size:8px;color:#fff;font-weight:600;letter-spacing:.5px">SCERT — CLASS SMARTBOARD MODE</div>
+            </div>
+            <div style="flex:1;display:flex;overflow:hidden">
+              <div style="flex:1;padding:8px;display:flex;flex-direction:column">
+                <div style="font-size:10px;font-weight:700;color:#1241a8;margin-bottom:4px">4.3 Finding Directions</div>
+                <div style="display:flex;gap:6px;flex:1;overflow:hidden">
+                  <div style="flex:1;background:#fafbfe;border:1px solid var(--line);border-radius:3px;padding:5px">
+                    <div style="font-size:7px;background:#fef3c7;padding:1px 5px;border-radius:10px;color:#92400e;display:inline-block;margin-bottom:3px">🇮🇳 தமிழ்</div>
+                    <div style="font-size:7px;line-height:1.5;font-family:'Noto Sans Tamil',sans-serif">◆ ஒரு கம்பி காந்தத்தை நூலில் கட்டி...</div>
+                  </div>
+                  <div style="flex:1;background:var(--white);border:1px solid var(--line);border-radius:3px;padding:5px">
+                    <div style="font-size:7px;background:var(--blue-lt);padding:1px 5px;border-radius:10px;color:var(--blue-dk);display:inline-block;margin-bottom:3px">🇬🇧 English</div>
+                    <div style="font-size:7px;line-height:1.5">◆ Suspend a bar magnet with a thread...</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dev-label" style="margin-top:6px">📺 Smartboard</div>
+        <span class="badge b-green" style="margin-top:3px">✓ Optimized</span>
+      </div>
+    </div>
+
+    <!-- Testing & Publish -->
+    <div class="g2">
+      <div class="card">
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:10px">Testing & QA</div>
+        <table>
+          <thead><tr><th>Test</th><th>Status</th><th>Result</th><th></th></tr></thead>
+          <tbody>
+            <tr><td class="bld">Software Testing</td><td><span class="badge b-green">Passed</span></td><td style="color:var(--green)">0 errors</td><td><button class="btn btn-xs">Re-run</button></td></tr>
+            <tr><td class="bld">Screen Reader Validation</td><td><span class="badge b-green">Passed</span></td><td style="color:var(--green)">WCAG 2.1 AA</td><td><button class="btn btn-xs">Re-run</button></td></tr>
+            <tr><td class="bld">Caption & Transcript Test</td><td><span class="badge b-amber">Warning</span></td><td style="color:var(--amber)">2 missing</td><td><button class="btn btn-xs btn-amber">Fix</button></td></tr>
+            <tr><td class="bld">Performance Optimization</td><td><span class="badge b-green">Passed</span></td><td style="color:var(--green)">Score: 94</td><td><button class="btn btn-xs">Re-run</button></td></tr>
+            <tr><td class="bld">Cross-Device Render</td><td><span class="badge b-green">Passed</span></td><td style="color:var(--green)">4/4 devices</td><td><button class="btn btn-xs">Re-run</button></td></tr>
+            <tr><td class="bld">Offline Access Test</td><td><span class="badge b-green">Passed</span></td><td style="color:var(--green)">SW cached</td><td><button class="btn btn-xs">Re-run</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div style="font-size:12.5px;font-weight:700;margin-bottom:10px">EPUB 3 Packaging & Publish</div>
+        <div class="fg"><label class="fl">Package Format</label>
+          <select class="fi"><option>EPUB 3.2 (Standard)</option><option>SCORM 2004</option><option>xAPI Package</option><option>Offline Bundle</option></select>
+        </div>
+        <div class="fg"><label class="fl">Include</label>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Audio files (Tamil + English)</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Bilingual text</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Interactive activities</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" checked style="accent-color:var(--blue)"> Assessment bank</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:12px;cursor:pointer"><input type="checkbox" style="accent-color:var(--blue)"> 3D models (large file)</label>
+          </div>
+        </div>
+        <div class="fg"><label class="fl">Version Note</label><input class="fi" value="v3.2.0 — Bilingual + Activities added"/></div>
+        <div style="display:flex;gap:7px">
+          <button class="btn btn-sm">Package EPUB</button>
+          <button class="btn btn-primary btn-sm" onclick="openModal('publish')">Publish Digital Book</button>
+        </div>
+        <div style="margin-top:10px;padding:8px 10px;background:var(--green-lt);border-radius:var(--r);font-size:11px;color:var(--green-dk)">
+          📽 <strong>User Manual (Video)</strong> — <a href="#" style="color:var(--green-dk)">Watch onboarding video</a> before first publish
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ ANALYTICS ════════════ -->
+<div class="screen" id="screen-analytics">
+  <div class="phdr">
+    <div><div class="pt">Analytics Dashboard</div><div class="ps">Student learning analytics, teacher monitoring, content insights</div></div>
+    <div class="ha">
+      <select class="fi" style="width:auto;font-size:11px;padding:4px 9px"><option>All Districts</option><option>Chennai</option><option>Coimbatore</option></select>
+      <button class="btn btn-sm">Export PDF</button>
+    </div>
+  </div>
+  <div class="ca">
+    <div class="g4" style="margin-bottom:14px">
+      <div class="stat"><div class="slbl">Active Today</div><div class="sval">2.1L</div><div class="sdelta up">↑ 8%</div></div>
+      <div class="stat"><div class="slbl">Avg Completion</div><div class="sval">68%</div><div class="sdelta up">↑ 3%</div></div>
+      <div class="stat"><div class="slbl">Assessments</div><div class="sval">84K</div><div class="sdelta up">Today</div></div>
+      <div class="stat"><div class="slbl">Avg Score</div><div class="sval">71%</div><div class="sdelta dn">↓ 2%</div></div>
+    </div>
+    <div class="g2" style="margin-bottom:14px">
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:10px">Subject Performance</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:center;gap:8px"><div style="font-size:11.5px;color:var(--ink2);width:100px">Science</div><div style="flex:1;background:var(--paper3);border-radius:20px;height:7px;overflow:hidden"><div style="width:78%;height:100%;background:var(--green);border-radius:20px"></div></div><div style="font-size:11px;font-weight:700;color:var(--green);width:30px;text-align:right">78%</div></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="font-size:11.5px;color:var(--ink2);width:100px">Mathematics</div><div style="flex:1;background:var(--paper3);border-radius:20px;height:7px;overflow:hidden"><div style="width:64%;height:100%;background:var(--amber);border-radius:20px"></div></div><div style="font-size:11px;font-weight:700;color:var(--amber);width:30px;text-align:right">64%</div></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="font-size:11.5px;color:var(--ink2);width:100px">Tamil</div><div style="flex:1;background:var(--paper3);border-radius:20px;height:7px;overflow:hidden"><div style="width:82%;height:100%;background:var(--green);border-radius:20px"></div></div><div style="font-size:11px;font-weight:700;color:var(--green);width:30px;text-align:right">82%</div></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="font-size:11.5px;color:var(--ink2);width:100px">Physics</div><div style="flex:1;background:var(--paper3);border-radius:20px;height:7px;overflow:hidden"><div style="width:58%;height:100%;background:var(--red);border-radius:20px"></div></div><div style="font-size:11px;font-weight:700;color:var(--red);width:30px;text-align:right">58%</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:700;margin-bottom:10px">Platform Status</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div class="csm" style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">Online-Offline Sync</div><div style="font-size:10px;color:var(--dust)">Continuity of Learning</div></div><span class="badge b-green">Active</span></div>
+          <div class="csm" style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">Low Bandwidth Engine</div><div style="font-size:10px;color:var(--dust)">Equitable Access</div></div><span class="badge b-green">Active</span></div>
+          <div class="csm" style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">EPUB 3 / SCORM</div><div style="font-size:10px;color:var(--dust)">Standards Compliance</div></div><span class="badge b-green">Active</span></div>
+          <div class="csm" style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;font-weight:600">Bilingual Platform</div><div style="font-size:10px;color:var(--dust)">Tamil + English synced</div></div><span class="badge b-green">Active</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-bg" id="mbg">
+  <div class="modal">
+    <div class="mftitle" id="mtitle"></div>
+    <div class="mfsub" id="msub" style="color:var(--dust);font-size:11.5px;margin-bottom:14px"></div>
+    <div id="mbody"></div>
+    <div class="mfooter">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" id="mcta" onclick="doAction()"></button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <div class="tdot" id="tdot"></div>
+  <span id="tmsg"></span>
+</div>
+
+<script>
+let curModal='';
+
+function goScreen(el,id){
+  if(!el)return;
+  document.querySelectorAll('.tnav a').forEach(a=>a.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const sc=document.getElementById('screen-'+id);
+  if(sc)sc.classList.add('active');
+}
+function navTo(el,id){
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  el.classList.add('active');
+  const map={dashboard:0,editor:1,reader:2,activities:3,features:4,approval:5,deploy:6,analytics:7};
+  const navLinks=document.querySelectorAll('.tnav a');
+  if(map[id]!==undefined) goScreen(navLinks[map[id]],id);
+}
+function toggleTree(id){
+  const t=document.getElementById(id+'t');
+  const a=document.getElementById(id+'a');
+  if(!t)return;
+  const hidden=t.style.display==='none';
+  t.style.display=hidden?'':'none';
+  a.textContent=hidden?'▾':'▸';
+}
+function swTab(el){
+  el.parentElement.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// Bilingual mode
+function setMode(m){
+  ['bili','tm','en'].forEach(k=>{
+    document.getElementById('mode-'+k).classList.toggle('active',k===m);
+  });
+  const ptm=document.getElementById('pane-tamil');
+  const pen=document.getElementById('pane-english');
+  const sep=document.querySelector('.bili-sep');
+  if(m==='bili'){ptm.style.display='flex';pen.style.display='flex';sep.style.display='block';}
+  else if(m==='tm'){ptm.style.display='flex';pen.style.display='none';sep.style.display='none';}
+  else{ptm.style.display='none';pen.style.display='flex';sep.style.display='none';}
+}
+
+// Synced scroll
+const tmc=document.getElementById('tm-content');
+const enc=document.getElementById('en-content');
+let syncing=false;
+function syncScroll(src,dst){
+  if(syncing)return;
+  syncing=true;
+  const ratio=src.scrollTop/(src.scrollHeight-src.clientHeight);
+  dst.scrollTop=ratio*(dst.scrollHeight-dst.clientHeight);
+  requestAnimationFrame(()=>syncing=false);
+}
+if(tmc&&enc){
+  tmc.addEventListener('scroll',()=>syncScroll(tmc,enc));
+  enc.addEventListener('scroll',()=>syncScroll(enc,tmc));
+}
+
+// Drag & drop
+let dragId='';
+function drag(ev){dragId=ev.target.id;ev.target.classList.add('dragging')}
+function ev(ev){ev.preventDefault();ev.currentTarget.classList.add('over')}
+function drop(ev,zoneId){
+  ev.preventDefault();
+  const zone=document.getElementById(zoneId);
+  zone.classList.remove('over');
+  const item=document.getElementById(dragId);
+  if(item){
+    item.classList.remove('dragging');
+    const chip=document.createElement('span');
+    chip.textContent=item.textContent;
+    chip.style.cssText='background:var(--blue);color:#fff;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;margin:2px;display:inline-block';
+    zone.appendChild(chip);
+    item.remove();
+  }
+}
+document.querySelectorAll('.drop-zone').forEach(z=>{
+  z.addEventListener('dragleave',()=>z.classList.remove('over'));
+});
+
+// Checklist counter
+document.querySelectorAll('#rvcl input').forEach(cb=>{
+  cb.addEventListener('change',()=>{
+    const all=document.querySelectorAll('#rvcl input');
+    const done=Array.from(all).filter(c=>c.checked).length;
+    const el=document.getElementById('ckst');
+    if(el)el.textContent=done+' / '+all.length+' completed';
+  });
+});
+
+// Modal
+function openModal(type){
+  curModal=type;
+  const configs={
+    approve:{title:'Approve & Forward to L2 — HOD',color:'var(--green-dk)',sub:'Forwarding to Dr. Sundaram (HOD) for Level 2 approval.',body:'<div class="fg"><label class="fl">Approval Note</label><textarea class="fi" rows="3">Content verified. Audio sync confirmed. Bilingual view tested. Please check 3D labels.</textarea></div>',cta:'Confirm Approve',btn:'btn-green'},
+    revise:{title:'Request Changes from Author',color:'var(--amber-dk)',sub:'Author will be notified. Content locked until resubmitted.',body:'<div class="fg"><label class="fl">Changes Required</label><textarea class="fi" rows="4">1. Add captions to video on Page 5\n2. Complete 3D hotspot labels\n3. Verify Tamil bilingual text alignment on Page 4</textarea></div>',cta:'Send Request',btn:'btn-amber'},
+    reject:{title:'Return to Author',color:'var(--red-dk)',sub:'Content returned. Page locked and submission reset.',body:'<div class="fg"><label class="fl">Rejection Reason</label><select class="fi" style="margin-bottom:8px"><option>Factual / curriculum error</option><option>Missing media assets</option><option>Accessibility non-compliant</option><option>Bilingual text mismatch</option></select><textarea class="fi" rows="3">3D model labels are incorrect per SCERT curriculum guidelines. Bilingual text in Page 4 does not match.</textarea></div>',cta:'Return to Author',btn:'btn-red'},
+    submit:{title:'Submit Content for Approval',color:'var(--blue-dk)',sub:'Submit Gr.8 Science Ch.1 Pg.3–7 for L1 Content Review.',body:'<div class="fg"><label class="fl">Submission Note</label><textarea class="fi" rows="3">Audio sync complete. Bilingual view configured (Tamil+English). Drag-drop activity added. 3D model configured.</textarea></div><div class="fg"><label class="fl">Assign Reviewer</label><select class="fi"><option>Sudha K. — L1 Reviewer (Science)</option><option>Auto-assign by subject</option></select></div>',cta:'Submit for Review',btn:'btn-primary'},
+    publish:{title:'Publish Digital Book',color:'var(--green-dk)',sub:'Gr.8 Science — All approved content will go live.',body:'<div class="fg"><label class="fl">Publish To</label><select class="fi"><option>Live Platform (CDN)</option><option>Staging Only</option><option>EPUB Download Package</option></select></div><div class="fg"><label class="fl">Version</label><input class="fi" value="v3.2.0"/></div><div style="background:var(--green-lt);border-radius:var(--r);padding:8px 10px;font-size:11px;color:var(--green-dk)">✓ All 3 approval stages cleared · Bilingual content verified · 48 books ready</div>',cta:'Publish Now',btn:'btn-green'},
+  };
+  const c=configs[type];
+  if(!c)return;
+  document.getElementById('mtitle').textContent=c.title;
+  document.getElementById('mtitle').style.color=c.color;
+  document.getElementById('msub').textContent=c.sub;
+  document.getElementById('mbody').innerHTML=c.body;
+  document.getElementById('mcta').textContent=c.cta;
+  document.getElementById('mcta').className='btn '+c.btn;
+  document.getElementById('mbg').classList.add('open');
+}
+function closeModal(){document.getElementById('mbg').classList.remove('open')}
+function doAction(){
+  closeModal();
+  const msgs={approve:'Approved & forwarded to L2 — Dr. Sundaram notified',revise:'Change request sent to Priya Rajan',reject:'Content returned to author',submit:'Submitted for L1 Content Review',publish:'Digital Book published to CDN successfully'};
+  const colors={approve:'var(--green)',revise:'var(--amber)',reject:'var(--red)',submit:'var(--blue)',publish:'var(--green)'};
+  showToast(msgs[curModal]||'Done',colors[curModal]||'var(--blue)');
+}
+function showToast(msg,color){
+  document.getElementById('tdot').style.background=color;
+  document.getElementById('tmsg').textContent=msg;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+document.getElementById('mbg').addEventListener('click',function(e){if(e.target===this)closeModal()});
+</script>
+</body>
+</html>
